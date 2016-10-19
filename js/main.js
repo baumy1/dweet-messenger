@@ -1,3 +1,4 @@
+// Dweets to message1 dweet with specified content
 function dweetMessage(content) {
     //                  thing                                   content             callback
     dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {hello: content}, function(err, dweet) {
@@ -6,6 +7,7 @@ function dweetMessage(content) {
         }
     });
 }
+// Appends specified message to messages div
 function appendMessage(message) {
     $("#messages").append("<p>" + message + "</p>");
 }
