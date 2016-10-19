@@ -3,7 +3,7 @@ $(document).ready(function() {
     // Sending Dweets
     $("#dweet").click(function() {
         // Value of input
-        var content = $("#message").val();
+        var content = $("#newMessage").val();
         //                  thing                                   content             callback
         dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {hello: content}, function(err, dweet) {
             if(err) {
@@ -14,6 +14,7 @@ $(document).ready(function() {
 
     // Listening to Dweets
     dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
-        console.log(dweet.content);
+        // Append dweet to messages div
+        $("#messages").append("<p>" + dweet.content["hello"] + "</p>");
     });
 });
