@@ -1,0 +1,28 @@
+* {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#container {
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#newMessage {
+    border: 0;
+    height: 35px;
+    width: 80%;
+    float: left;
+    font-size: 25px;
+}
+
+#sendMessage {
+    width: 19%;
+    height: 25px;
+    float: right;
+    padding: 5px 0;
+    font-size: 25px;
+}

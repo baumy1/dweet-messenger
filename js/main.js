@@ -26,7 +26,7 @@ $(document).ready(function() {
 
     // Sending Dweets
     // Send Dweet on click of button
-    $("#dweet").click(function() {
+    $("#sendMessage").click(function() {
         // Dweets with value of input
         dweetMessage($("#newMessage").val());
     });
