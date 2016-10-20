@@ -8,7 +8,7 @@ function dweetMessage(content) {
                 console.log(err);
             }
             // Emptys input
-            $("#newMessage").val("");
+            $("#newContent").val("");
         });
     }
 }
@@ -28,12 +28,12 @@ $(document).ready(function() {
     // Send Dweet on click of button
     $("#sendMessage").click(function() {
         // Dweets with value of input
-        dweetMessage($("#newMessage").val());
+        dweetMessage($("#newContent").val());
     });
     // Send Dweet on enter press
-    $("#newMessage").keydown(function(e) {
+    $("#newContent").keydown(function(e) {
         if(e.which == 13) {
-            dweetMessage($("#newMessage").val());
+            dweetMessage($("#newContent").val());
         }
     });
 });
