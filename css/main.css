@@ -27,6 +27,10 @@
     left: 5%;
 }
 
+#newContent:focus {
+    outline: none;
+}
+
 #sendMessage {
     width: 10%;
     height: 25px;
