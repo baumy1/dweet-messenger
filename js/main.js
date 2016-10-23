@@ -1,3 +1,8 @@
+// Sanitises input
+function sanitise(input) {
+    return $("<span>").text(input).html();
+}
+
 // Dweets to message1 dweet with specified content
 function dweetMessage(content) {
     // Check to make sure input isn't empty'
@@ -28,12 +33,12 @@ $(document).ready(function() {
     // Send Dweet on click of button
     $("#sendMessage").click(function() {
         // Dweets with value of input
-        dweetMessage($("#newContent").val());
+        dweetMessage(sanitise($("#newContent").val()));
     });
     // Send Dweet on enter press
     $("#newContent").keydown(function(e) {
         if(e.which == 13) {
-            dweetMessage($("#newContent").val());
+            dweetMessage(sanitise($("#newContent").val()));
         }
     });
 });
