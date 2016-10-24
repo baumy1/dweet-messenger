@@ -19,7 +19,7 @@ function dweetMessage(content) {
 }
 // Appends specified message to messages div
 function appendMessage(message) {
-    $("#messages").append("<p>" + message + "</p>");
+    $("#messages").append("<div id=\"message\"><p>" + message + "</p></div>");
 }
 
 $(document).ready(function() {

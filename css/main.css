@@ -45,3 +45,11 @@
     border: 2px solid grey;
     border-radius: 5px;
 }
+
+#messages {
+    width: 90%;
+    height: 80%;
+    position: fixed;
+    top: 2%;
+    left: 5%;
+}
