@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: sans-serif;
 }
 
 body, html {
@@ -18,6 +19,7 @@ body, html {
     height: 35px;
     position: fixed;
     bottom: 5%;
+    background: white;
 }
 
 #newContent {
@@ -33,18 +35,24 @@ body, html {
     outline: none;
 }
 
+#newContent::-webkit-input-placeholder {
+    color: #90AFC5;
+}
+
 #sendMessage {
     width: 10%;
     height: 21px;
-    padding: 5px 0;
+    padding-top: 2px;
+    padding-bottom: 8px;
     font-size: 25px;
     text-align: center;
     position: fixed;
     right: 5%;
+    color: #90AFC5;
 }
 
 #newMessage > * {
-    border: 2px solid grey;
+    border: 2px solid #90AFC5;
     border-radius: 5px;
 }
 
@@ -52,15 +60,28 @@ body, html {
     width: 90%;
     height: 80%;
     position: fixed;
+    overflow: scroll;
     top: 2%;
     left: 5%;
 }
 
 .message {
-    font-size: 35px;
+    font-size: 15px;
     padding: 10px;
-    background: blue;
-    border: 1px solid;
+    border-radius: 5px;
     display: inline-block;
     margin: 25px;
+    color: white;
+}
+
+.sent {
+    background: #2A3132;
+    margin-left: 100%;
+    float: right;
+}
+
+.recieved {
+    background: #336B87;
+    margin-right: 100%;
+    float: left;
 }
