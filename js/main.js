@@ -26,6 +26,8 @@ function appendMessage(message, sender) {
         sender = "recieved"
     }
     $("#messages").append("<div class=\"message " + sender + "\"><p>" + message + "</p></div>");
+    // Scroll to bottom of messages
+    $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
 }
 
 $(document).ready(function() {

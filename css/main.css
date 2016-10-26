@@ -69,6 +69,8 @@ body, html {
     font-size: 15px;
     padding: 10px;
     border-radius: 5px;
+    max-width: 70%;
+    width: auto;
     display: inline-block;
     margin: 25px;
     color: white;
@@ -76,7 +78,7 @@ body, html {
 
 .sent {
     background: #2A3132;
-    margin-left: 100%;
+    clear: both;
     float: right;
 }
 
