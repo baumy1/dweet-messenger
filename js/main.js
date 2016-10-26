@@ -7,8 +7,8 @@ function sanitise(input) {
 function dweetMessage(content) {
     // Check to make sure input isn't empty'
     if(content != "") {
-        //                  thing                                   content             callback
-        dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {hello: content}, function(err, dweet) {
+        //                  thing                                   content                             callback
+        dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {message: content, sender: "tom"}, function(err, dweet) {
             if(err) {
                 console.log(err);
             }
@@ -18,15 +18,21 @@ function dweetMessage(content) {
     }
 }
 // Appends specified message to messages div
-function appendMessage(message) {
-    $("#messages").append("<div class=\"message\"><p>" + message + "</p></div>");
+function appendMessage(message, sender) {
+    // Change this line depending on user   
+    if (sender == "tom") {
+        sender = "sent";
+    } else {
+        sender = "recieved"
+    }
+    $("#messages").append("<div class=\"message " + sender + "\"><p>" + message + "</p></div>");
 }
 
 $(document).ready(function() {
     // Listening to Dweets
     dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
         // Append dweet to messages div
-        appendMessage(dweet.content["hello"]);
+        appendMessage(dweet.content["message"], dweet.content["sender"]);
     });
 
     // Sending Dweets
