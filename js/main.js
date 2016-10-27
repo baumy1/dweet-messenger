@@ -25,7 +25,7 @@ function appendMessage(message, sender) {
     } else {
         sender = "recieved"
     }
-    $("#messages").append("<div class=\"message " + sender + "\"><p>" + message + "</p></div>");
+    $("#messages").append("<div class=\"message " + sanitise(sender) + "\"><p>" + sanitise(message) + "</p></div>");
     // Scroll to bottom of messages
     $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
 }
@@ -35,7 +35,7 @@ $(document).ready(function() {
     dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
         // Append dweet to messages div
         appendMessage(dweet.content["message"], dweet.content["sender"]);
-    }); 
+    });
 
     // Sending Dweets
     // Send Dweet on click of button
