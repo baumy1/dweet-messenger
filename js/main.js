@@ -1,3 +1,6 @@
+// Change this for each different user
+var user = "gracie"
+
 // Sanitises input
 function sanitise(input) {
     return $("<span>").text(input).html();
@@ -8,7 +11,7 @@ function dweetMessage(content) {
     // Check to make sure input isn't empty'
     if(content != "") {
         //                  thing                                   content                             callback
-        dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {message: content, sender: "tom"}, function(err, dweet) {
+        dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {message: content, sender: user}, function(err, dweet) {
             if(err) {
                 console.log(err);
             }
@@ -20,7 +23,7 @@ function dweetMessage(content) {
 // Appends specified message to messages div
 function appendMessage(message, sender) {
     // Change this line depending on user   
-    if (sender == "tom") {
+    if (sender == user) {
         sender = "sent";
     } else {
         sender = "recieved"
