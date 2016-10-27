@@ -4,17 +4,25 @@
         <title>Dweet Messenger</title>
         <meta charset="UTF-8">
         <script src="js/jquery.js"></script>
+        <script src="js/js.cookie.js"></script>
         <script src="js/dweet.io.js"></script>
         <script src="js/main.js"></script>
         <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
+        <!-- div id="who">
+            <select id="selectName">
+                <option value="gracie">Graice</option>
+                <option value="tom">Tom</option>
+            </select>
+            <h4 class="button" id="personSelect">Ok!</h4>
+        </div -->
         <div id="container">
             <div id="messages">
             </div>
             <div id="newMessage">
                 <input id="newContent" placeholder="Message">
-                <h4 id="sendMessage">Send</h4>
+                <h4 id="sendMessage" class="button">Send</h4>
             </div>
         </div>
     </body>
