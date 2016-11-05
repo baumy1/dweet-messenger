@@ -55,10 +55,18 @@ $(document).ready(function() {
         var state = dweet.content["state"];
         $("#state").removeClass().addClass(state);
     });
-    // Listening to Dweets
-    dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(err, dweet) {
+    // Listening to see if online state changes
+    dweetio.listen_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(dweet) {
         if(err) {
-                console.log(err);
+            console.log(err);
+        }
+        var state = dweet.content["state"];
+        $("#state").removeClass().addClass(state);
+    });
+    // Listening to Dweets
+    dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
+        if(err) {
+            console.log(err);
         }
         // Append dweet to messages div
         appendMessage(dweet.content["message"], dweet.content["sender"]);
