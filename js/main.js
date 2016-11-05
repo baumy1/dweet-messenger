@@ -1,5 +1,16 @@
 // Change this for each different user
-var user = "gracie"
+var user = "gracie";
+// Sets other user
+var otherUser;
+switch (user) {
+    case "gracie":
+        otherUser = "tom";
+        break;
+    case "tom":
+        otherUser = "gracie";
+        break;
+};
+
 
 // Sanitises input
 function sanitise(input) {
@@ -10,7 +21,6 @@ function sanitise(input) {
 function dweetMessage(content) {
     // Check to make sure input isn't empty'
     if(content != "") {
-        //                  thing                                   content                             callback
         dweetio.dweet_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", {message: content, sender: user}, function(err, dweet) {
             if(err) {
                 console.log(err);
@@ -25,7 +35,7 @@ function appendMessage(message, sender) {
     // Change this line depending on user   
     if (sender == user) {
         sender = "sent";
-    } else {
+    } else if (sender == otherUser) {
         sender = "recieved"
     }
     $("#messages").append("<div class=\"message " + sanitise(sender) + "\"><p>" + sanitise(message) + "</p></div>");
@@ -34,7 +44,7 @@ function appendMessage(message, sender) {
 }
 
 $(document).ready(function() {
-    // Get latest dweet
+    // Getting dweet
     // Check to see if other user is online
     dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(err, dweet) {
         // If there's no response from the server and an error is thrown try again
@@ -47,7 +57,7 @@ $(document).ready(function() {
                     location.reload();
             }
             var dweet = dweet[0];
-            var state = dweet.content["state"];
+            var state = dweet.content[otherUser];
             $("#state").removeClass().addClass(state);
             });
         }
@@ -57,22 +67,30 @@ $(document).ready(function() {
     });
     // Listening to see if online state changes
     dweetio.listen_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(dweet) {
-        if(err) {
-            console.log(err);
-        }
         var state = dweet.content["state"];
         $("#state").removeClass().addClass(state);
     });
     // Listening to Dweets
     dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
-        if(err) {
-            console.log(err);
-        }
         // Append dweet to messages div
         appendMessage(dweet.content["message"], dweet.content["sender"]);
     });
 
     // Sending Dweets
+    // Changes user state to online
+    dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", {state: "online"}, function(err, dweet) {
+        // If there's no response from the server and an error is thrown try again
+        if(err) {
+            console.log(err);
+            dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(err, dweet) {
+                if(err) {
+                    console.log(err);
+                    // Reload the page if there's an error the second time
+                    location.reload();
+                }
+            });
+        }
+    });
     // Send Dweet on click of button
     $("#sendMessage").click(function() {
         // Dweets with value of input
