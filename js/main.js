@@ -11,6 +11,19 @@ switch (user) {
         break;
 };
 
+// Dweets synchronously
+function dweetSynchronously(thing, content) {
+    $.ajax({
+        type: "POST",
+        url: "https://dweet.io:443/dweet/for/5ca2fed1-b1a8-425d-a362-50aed7ff53e9",
+        data: content,
+        async: false
+    })
+    .fail(function(e) {
+        console.log(e);
+        dweetSynchronously(thing, content);
+    })
+}
 
 // Sanitises input
 function sanitise(input) {
@@ -82,7 +95,7 @@ $(document).ready(function() {
         // If there's no response from the server and an error is thrown try again
         if(err) {
             console.log(err);
-            dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(err, dweet) {
+            dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", {state: "online"}, function(err, dweet) {
                 if(err) {
                     console.log(err);
                     // Reload the page if there's an error the second time
@@ -102,4 +115,9 @@ $(document).ready(function() {
             dweetMessage(sanitise($("#newContent").val()));
         }
     });
+
+    // Change user state when page is unloaded
+    window.onunload = function() {
+        dweetSynchronously("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", {state: "offline"});
+    };
 });
