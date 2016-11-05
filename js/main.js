@@ -37,13 +37,24 @@ $(document).ready(function() {
     // Get latest dweet
     // Check to see if other user is online
     dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(err, dweet) {
+        // If there's no response from the server and an error is thrown try again
         if(err) {
-                console.log(err);
+            console.log(err);
+            dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9", function(err, dweet) {
+            if(err) {
+                    console.log(err);
+                    // Reload the page if there's an error the second time
+                    location.reload();
+            }
+            var dweet = dweet[0];
+            var state = dweet.content["state"];
+            $("#state").removeClass().addClass(state);
+            });
         }
         var dweet = dweet[0];
         var state = dweet.content["state"];
         $("#state").removeClass().addClass(state);
-    })
+    });
     // Listening to Dweets
     dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(err, dweet) {
         if(err) {
