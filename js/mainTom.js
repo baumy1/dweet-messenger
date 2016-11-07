@@ -1,5 +1,5 @@
 // Change this for each different user
-var user = "gracie";
+var user = "tom";
 // Sets other user
 var otherUser;
 switch (user) {
