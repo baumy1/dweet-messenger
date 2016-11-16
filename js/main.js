@@ -30,7 +30,7 @@ function sanitise(input) {
     return $("<span>").text(input).html();
 }
 
-// Dweets to message1 dweet with specified content
+// Dweets to message dweet with specified content
 function dweetMessage(content) {
     // Check to make sure input isn't empty'
     if(content != "") {
@@ -56,8 +56,28 @@ function appendMessage(message, sender) {
     $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
 }
 
-$(document).ready(function() {
-    // Getting dweet
+// Important code to run before rest of the code
+function init() {
+    // Changes user state to online
+    dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
+        // If there's no response from the server and an error is thrown try again
+        if(err) {
+            console.log(err);
+            dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
+                if(err) {
+                    console.log(err);
+                    // Reload the page if there's an error the second time
+                    location.reload();
+                }
+            });
+        }
+    });
+
+    // Change user state when page is unloaded
+    window.onunload = function() {
+        dweetSynchronously("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "offline"});
+    };
+
     // Check to see if other user is online
     dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
         var dweet = dweet[0];
@@ -77,6 +97,12 @@ $(document).ready(function() {
         var state = dweet.content["online"];
         $("#state").removeClass().addClass(state);
     });
+
+}
+
+$(document).ready(function() {
+    init();
+    // Getting dweet
     // Listening to see if online state changes
     dweetio.listen_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(dweet) {
         var state = dweet.content["online"];
@@ -89,20 +115,6 @@ $(document).ready(function() {
     });
 
     // Sending Dweets
-    // Changes user state to online
-    dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
-        // If there's no response from the server and an error is thrown try again
-        if(err) {
-            console.log(err);
-            dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
-                if(err) {
-                    console.log(err);
-                    // Reload the page if there's an error the second time
-                    location.reload();
-                }
-            });
-        }
-    });
     // Send Dweet on click of button
     $("#sendMessage").click(function() {
         // Dweets with value of input
@@ -114,9 +126,4 @@ $(document).ready(function() {
             dweetMessage(sanitise($("#newContent").val()));
         }
     });
-
-    // Change user state when page is unloaded
-    window.onunload = function() {
-        dweetSynchronously("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "offline"});
-    };
 });
