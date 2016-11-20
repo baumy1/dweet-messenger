@@ -56,6 +56,50 @@ function appendMessage(message, sender) {
     $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
 }
 
+// Initialises the listeners
+function initListeners() {
+    // Check to see if other user is online
+    dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
+        var dweet = dweet[0];
+        // If there's no response from the server and an error is thrown try again
+        if(err) {
+            console.log(err);
+            dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
+                if(err) {
+                        console.log(err);
+                        // Reload the page if there's an error the second time
+                        location.reload();
+                }
+                var state = dweet.content["online"];
+                $("#state").removeClass().addClass(state);
+            });
+        }
+        var state = dweet.content["online"];
+        $("#state").removeClass().addClass(state);
+    });
+    // Listening to see if online state changes
+    dweetio.listen_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(dweet) {
+        var state = dweet.content["online"];
+        $("#state").removeClass().addClass(state);
+    });
+    // Listening to Dweets
+    dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
+        // Append dweet to messages div
+        appendMessage(dweet.content["message"], dweet.content["sender"]);
+    });
+    // Send Dweet on click of button
+    $("#sendMessage").click(function() {
+        // Dweets with value of input
+        dweetMessage(sanitise($("#newContent").val()));
+    });
+    // Send Dweet on enter press
+    $("#newContent").keydown(function(e) {
+        if(e.which == 13) {
+            dweetMessage(sanitise($("#newContent").val()));
+        }
+    });
+}
+
 // Important code to run before rest of the code
 function init() {
     // Changes user state to online
@@ -78,52 +122,9 @@ function init() {
         dweetSynchronously("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "offline"});
     };
 
-    // Check to see if other user is online
-    dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
-        var dweet = dweet[0];
-        // If there's no response from the server and an error is thrown try again
-        if(err) {
-            console.log(err);
-            dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
-                if(err) {
-                        console.log(err);
-                        // Reload the page if there's an error the second time
-                        location.reload();
-                }
-                var state = dweet.content["online"];
-                $("#state").removeClass().addClass(state);
-            });
-        }
-        var state = dweet.content["online"];
-        $("#state").removeClass().addClass(state);
-    });
-
 }
 
 $(document).ready(function() {
     init();
-    // Getting dweet
-    // Listening to see if online state changes
-    dweetio.listen_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(dweet) {
-        var state = dweet.content["online"];
-        $("#state").removeClass().addClass(state);
-    });
-    // Listening to Dweets
-    dweetio.listen_for("af62bdb5-92d3-4887-b0f2-d2266c7244e6", function(dweet) {
-        // Append dweet to messages div
-        appendMessage(dweet.content["message"], dweet.content["sender"]);
-    });
-
-    // Sending Dweets
-    // Send Dweet on click of button
-    $("#sendMessage").click(function() {
-        // Dweets with value of input
-        dweetMessage(sanitise($("#newContent").val()));
-    });
-    // Send Dweet on enter press
-    $("#newContent").keydown(function(e) {
-        if(e.which == 13) {
-            dweetMessage(sanitise($("#newContent").val()));
-        }
-    });
+    initListeners();
 });
