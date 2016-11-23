@@ -30,7 +30,7 @@ function sanitise(input) {
     return $("<span>").text(input).html();
 }
 
-// Dweets to message1 dweet with specified content
+// Dweets to message dweet with specified content
 function dweetMessage(content) {
     // Check to make sure input isn't empty'
     if(content != "") {
@@ -56,8 +56,8 @@ function appendMessage(message, sender) {
     $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
 }
 
-$(document).ready(function() {
-    // Getting dweet
+// Initialises the listeners
+function initListeners() {
     // Check to see if other user is online
     dweetio.get_latest_dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + otherUser, function(err, dweet) {
         var dweet = dweet[0];
@@ -87,8 +87,21 @@ $(document).ready(function() {
         // Append dweet to messages div
         appendMessage(dweet.content["message"], dweet.content["sender"]);
     });
+    // Send Dweet on click of button
+    $("#sendMessage").click(function() {
+        // Dweets with value of input
+        dweetMessage(sanitise($("#newContent").val()));
+    });
+    // Send Dweet on enter press
+    $("#newContent").keydown(function(e) {
+        if(e.which == 13) {
+            dweetMessage(sanitise($("#newContent").val()));
+        }
+    });
+}
 
-    // Sending Dweets
+// Important code to run before rest of the code
+function init() {
     // Changes user state to online
     dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
         // If there's no response from the server and an error is thrown try again
@@ -103,20 +116,15 @@ $(document).ready(function() {
             });
         }
     });
-    // Send Dweet on click of button
-    $("#sendMessage").click(function() {
-        // Dweets with value of input
-        dweetMessage(sanitise($("#newContent").val()));
-    });
-    // Send Dweet on enter press
-    $("#newContent").keydown(function(e) {
-        if(e.which == 13) {
-            dweetMessage(sanitise($("#newContent").val()));
-        }
-    });
 
     // Change user state when page is unloaded
     window.onunload = function() {
         dweetSynchronously("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "offline"});
     };
+
+}
+
+$(document).ready(function() {
+    init();
+    initListeners();
 });
