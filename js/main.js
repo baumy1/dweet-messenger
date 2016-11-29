@@ -102,6 +102,23 @@ function initListeners() {
 
 // Important code to run before rest of the code
 function init() {
+
+    // Registering service worker
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("serviceWorker.js", {scope: "/"}).then(function(registration) {
+            console.log("success");
+
+            navigator.serviceWorker.controller.postMessage({
+                "command": "log",
+                "message": "hello"
+            });
+
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+
     // Changes user state to online
     dweetio.dweet_for("5ca2fed1-b1a8-425d-a362-50aed7ff53e9-" + user, {online: "online"}, function(err, dweet) {
         // If there's no response from the server and an error is thrown try again
